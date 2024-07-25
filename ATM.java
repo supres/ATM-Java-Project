@@ -3,6 +3,7 @@ public class ATM{
         
         // Instiate Accounts object
         Accounts accounts = new Accounts();
-        accounts.createAccount();
+        accounts.createUserAccountNumber();
+        accounts.createUserAccountPassword();
     }
 }
