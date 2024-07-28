@@ -1,14 +1,27 @@
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.math.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+
 public class Accounts{
 
   // Instiance Variables
   private int accountNumber;
   private String password;
+  private double balance; 
 
   ArrayList<Integer> Accounts = new ArrayList<Integer>();
+
+  // Accounts toString Method
+  public String toString(){
+    return "Account Number: " + getAccountNumber()
+                       +"\nCurrent Account Balance: " + getBalance();
+}
 
   // Instiate Scanner object
   Scanner input = new Scanner(System.in);
@@ -24,6 +37,14 @@ public class Accounts{
                                                                // |
   public String getPassword() {                                // |
     return password;                                           // | 
+  }                                                            // |
+                                                               // |
+  public double getBalance(){                                  // |
+    return balance;                                            // |
+  }                                                            // |
+                                                               // |
+  public void setBalance(double balance){                      // |
+    this.balance = balance;                                    // |
   }                                                            // |
                                                                // | 
   public void setPassword(String password) {                   // |
@@ -45,7 +66,7 @@ public class Accounts{
     // If the user says no, generate one
     if (promptResponse.equalsIgnoreCase("no")){
       double randNum = Math.random();
-      accountNumber = (int) (10000000 + randNum * 90000000);
+      setAccountNumber((int) (10000000 + randNum * 90000000));
       System.out.println("Your randomly generated account number is: " + accountNumber);
     }
     // If the user says yes have them create one
@@ -55,7 +76,7 @@ public class Accounts{
       
       // checks to see if the account number is 8 digits
       if (responseInput.matches("\\d{8}")){
-        accountNumber = Integer.parseInt(responseInput);
+        setAccountNumber(Integer.parseInt(responseInput));
         System.out.println("Entered Account number:" + accountNumber);
     }
       // Error handling if number entered isnt 8 digits
@@ -83,14 +104,47 @@ public class Accounts{
       break;
     }
     else{
-      System.out.println("Incorrect");
+      System.out.println("Incorrect, please ensure your password contains a number and letters");
     }
   }
  }
 
+ // Method that checks to see if a user enters in a valid password
  private boolean isValidPassword(String password){
   Pattern letter = Pattern.compile("[a-zA-Z]");
   Pattern digit = Pattern.compile("[0-9]");
   return letter.matcher(password).find() && digit.matcher(password).find();
+ }
+
+ // Saves user account Information to text file 
+ public void saveAccountInfo(){
+   try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"));
+            writer.write("Account number: " + getAccountNumber());
+            writer.write("\nPassword: " + getPassword());
+            writer.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+ }
+
+ public boolean loginAccount(){
+  int AccountNumToCheck; 
+
+  // Try catch block if the user enters in anything else other than numbers 
+  try
+  { System.out.println("Enter you account number: ");
+    AccountNumToCheck = input.nextInt();
+  } 
+ catch (InputMismatchException e){
+      System.out.println("Enter Only numbers please");
+      loginAccount();
+    }
+
+    
+
+  return false;
+  
  }
 }
