@@ -1,7 +1,4 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 
 public class ATM{
     public static void main(String[] args) {
@@ -10,9 +7,15 @@ public class ATM{
 
         // Instiate Transaction object
         Transactions tactions = new Transactions();
-        accounts.createUserAccountNumber();
-        accounts.createUserAccountPassword();
-        accounts.saveAccountInfo();
+        // accounts.createUserAccountNumber();
+        // accounts.createUserAccountPassword();
+        // accounts.saveAccountInfo();
+        try {
+            accounts.loginAccount();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
 

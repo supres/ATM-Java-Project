@@ -2,11 +2,12 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.math.*;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 
 public class Accounts{
 
@@ -76,20 +77,20 @@ public class Accounts{
       
       // checks to see if the account number is 8 digits
       if (responseInput.matches("\\d{8}")){
-        setAccountNumber(Integer.parseInt(responseInput));
-        System.out.println("Entered Account number:" + accountNumber);
+         setAccountNumber(Integer.parseInt(responseInput));
+         System.out.println("Entered Account number:" + accountNumber);
     }
       // Error handling if number entered isnt 8 digits
        else {
-      System.out.println("Invalid input. Please enter exactly 8 digits.");
-      createUserAccountNumber(); // recursion
+         System.out.println("Invalid input. Please enter exactly 8 digits.");
+          createUserAccountNumber(); // recursion
   } 
    }
 
    // Error handling if the use types anything besides 'yes' or 'no'
   else {
-    System.out.println("\"Invalid response. Please type 'yes' or 'no'.");
-    createUserAccountNumber(); // recursion 
+     System.out.println("\"Invalid response. Please type 'yes' or 'no'.");
+     createUserAccountNumber(); // recursion 
    }
  }
 
@@ -105,6 +106,7 @@ public class Accounts{
     }
     else{
       System.out.println("Incorrect, please ensure your password contains a number and letters");
+      createUserAccountPassword(); // Recursion
     }
   }
  }
@@ -129,22 +131,30 @@ public class Accounts{
         }
  }
 
- public boolean loginAccount(){
+ public boolean loginAccount() throws IOException{
   int AccountNumToCheck; 
 
+  // Instiate a Buffered Reader object to read output.txt file
+  BufferedReader reader = new BufferedReader(new FileReader("output.txt")); 
+
   // Try catch block if the user enters in anything else other than numbers 
-  try
-  { System.out.println("Enter you account number: ");
-    AccountNumToCheck = input.nextInt();
-  } 
- catch (InputMismatchException e){
-      System.out.println("Enter Only numbers please");
-      loginAccount();
-    }
+  System.out.println("Enter your account number: ");
+  try{ 
+     AccountNumToCheck = input.nextInt();
+  }
+  catch (InputMismatchException e){
+    e.printStackTrace();
+    System.out.println("Enter only numbers please");
+    input.next();
+    loginAccount(); // recursion as error handling
+  }
 
-    
-
+   String line;
+   String lines = "";
+    while ((line = reader.readLine()) != null){
+      lines += line;
+     }
+    System.out.println(lines); 
   return false;
-  
  }
 }
